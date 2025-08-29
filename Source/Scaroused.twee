@@ -1,0 +1,469 @@
+:: StoryTitle
+Scaroused
+
+
+:: StoryData
+{
+  "ifid": "8C89402A-360D-44E0-8D29-B65BA3ECF16F",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "MainMenu",
+  "tag-colors": {
+    "1st-Floor": "yellow",
+    "Formal": "green",
+    "Utility": "purple",
+    "2nd-Floor": "orange",
+    "Basement-1": "red",
+    "Basement-2": "red",
+    "3rd-Floor": "red"
+  },
+  "zoom": 0.6
+}
+
+
+:: 2nd Floor Landing [2nd-Floor Formal] {"position":"3625,1925","size":"100,100"}
+[[Entry Hall]] 
+
+[[Upper East Hall]] 
+
+[[Upper West Hall]] 
+
+[[Guest Bedroom (1)]] 
+
+[[Guest Bedroom (2)]] 
+
+
+:: Atrium [1st-Floor Formal] {"position":"1800,1600","size":"100,100"}
+[[Entry Hall]] 
+
+[[Back Hall]] 
+
+
+:: Attic [3rd-Floor Utility] {"position":"3625,1525","size":"100,100"}
+[[Upper Rear Hall]] 
+
+
+:: Back Hall [1st-Floor Utility] {"position":"1800,1400","size":"100,100"}
+[[North-East Corridor]] 
+
+[[Atrium]] 
+
+[[Lawn]] 
+
+[[Mud Room]] 
+
+[[Pool]] 
+
+
+:: Ballroom [1st-Floor Formal] {"position":"2475,1175","size":"100,100"}
+[[North-East Corridor]] 
+
+[[Lawn]] 
+
+
+:: Basement Landing [Basement-1 Utility] {"position":"1800,2200","size":"100,100"}
+[[Back Hall]] 
+
+[[Laundry Room]] 
+
+[[Boiler Room]] 
+
+
+:: Bath Room (1) {"position":"600,1700","size":"100,100"}
+
+
+
+:: Billiard Room [1st-Floor Formal] {"position":"1200,1800","size":"100,100"}
+[[West Corridor]] 
+
+
+:: Boiler Room [Basement-1 Utility] {"position":"2000,2200","size":"100,100"}
+
+
+
+:: Boudoir [1st-Floor Formal] {"position":"2225,1900","size":"100,100"}
+[[East Corridor]] 
+
+
+:: Catacombs [Basement-1 Utility] {"position":"2000,600","size":"100,100"}
+[[Mausoleum]] 
+
+[[Ritual Room]] 
+
+
+:: Character {"position":"0,200","size":"100,100"}
+Name: <<print $character.name>>
+Courage: <<print $stats.Courage>>
+Clarity: <<print $stats.Clarity>>
+Cunning: <<print $stats.Cunning>>
+
+<<link "Back">><<goto $_lastPassage>><</link>>
+
+
+:: Coat Check [1st-Floor Utility] {"position":"2000,1800","size":"100,100"}
+[[Entry Hall]] 
+
+
+:: Curiosities Room [1st-Floor Formal] {"position":"2350,1725","size":"100,100"}
+[[East Corridor]] 
+
+
+:: Dining Room [1st-Floor Formal] {"position":"1175,1600","size":"100,100"}
+[[Kitchen]] 
+
+[[North-West Corridor]] 
+
+
+:: Doll Room [2nd-Floor Formal] {"position":"4225,1625","size":"100,100"}
+[[Upper East Hall]] 
+
+
+:: Dungeon [Basement-2 Utility] {"position":"1600,2400","size":"100,100"}
+[[Laboratory]] 
+
+[[Laundry Room]] 
+
+
+:: East Corridor [1st-Floor Formal] {"position":"2100,1700","size":"100,100"}
+[[North-East Corridor]] 
+
+[[Curiosities Room]] 
+
+[[Boudoir]] 
+
+
+:: Entry Hall [1st-Floor Formal] {"position":"1800,1800","size":"100,100"}
+[[Coat Check]] 
+
+[[2nd Floor Landing]] 
+
+[[Atrium]]
+
+[[East Corridor]] 
+
+[[West Corridor]] 
+
+
+:: Fancy Key {"position":"100,700","size":"100,100"}
+
+
+
+:: Guest Bedroom (1) [2nd-Floor Formal] {"position":"3025,2025","size":"100,100"}
+[[2nd Floor Landing]] 
+
+
+:: Guest Bedroom (2) [2nd-Floor Utility] {"position":"4225,2025","size":"100,100"}
+[[2nd Floor Landing]] 
+
+
+:: Hedge Maze [1st-Floor Formal] {"position":"1800,800","size":"100,100"}
+[[Mausoleum]] 
+
+[[Lawn]] 
+
+
+:: Intro {"position":"500,200","size":"100,100"}
+Hello, please enter your name:
+
+<<textarea "$character.name" "Bob" "Character" autofocus>>
+
+<div id="statblock">
+	<<include "StatBlock">>
+</div>
+
+
+
+
+
+:: Inventory {"position":"0,300","size":"100,100"}
+<h2>Inventory</h2>
+<<if $inventory and $inventory.length > 0>>
+	<ul>
+	<<for _item range $inventory>>
+		<li><<= _item>></li>
+	<</for>>
+	</ul>
+<<else>>
+	<p>You are carrying nothing.</p>
+<</if>>
+
+<<link "Back">><<goto $_lastPassage>><</link>>
+
+
+:: Kitchen [1st-Floor Utility] {"position":"1175,1400","size":"100,100"}
+[[Dining Room]] 
+
+[[Scullery]] 
+
+
+:: Laboratory [Basement-2 Utility] {"position":"2000,2400","size":"100,100"}
+[[Boiler Room]] 
+
+[[Specimen Room]] 
+
+[[Dungeon]] 
+
+
+:: Laundry Room [Basement-1 Utility] {"position":"1600,2200","size":"100,100"}
+[[Dungeon]] 
+
+
+:: Lawn [1st-Floor Formal] {"position":"1800,1000","size":"100,100"}
+[[Back Hall]] 
+
+[[Hedge Maze]] 
+
+[[Mud Room]] 
+
+[[Ballroom]] 
+
+
+:: Living Room [1st-Floor Utility] {"position":"1400,1200","size":"100,100"}
+[[North-West Corridor]] 
+
+
+:: MainMenu {"position":"300,100","size":"100,100"}
+[[Intro]]
+
+
+:: Map {"position":"0,400","size":"100,100"}
+<<link "Back">><<goto $_lastPassage>><</link>>
+
+
+:: Master's Quarters [2nd-Floor Utility] {"position":"3025,1425","size":"100,100"}
+[[Upper West Hall]] 
+
+
+:: Mausoleum [1st-Floor Formal] {"position":"1800,600","size":"100,100"}
+[[Hedge Maze]] 
+
+[[Catacombs]] 
+
+
+:: Mistresses' Quarters [2nd-Floor Utility] {"position":"4225,1425","size":"100,100"}
+[[Upper East Hall]] 
+
+
+:: Mud Room [1st-Floor Utility] {"position":"1625,1200","size":"100,100"}
+[[Back Hall]] 
+
+[[Lawn]] 
+
+
+:: Music Room [2nd-Floor Formal] {"position":"4225,1825","size":"100,100"}
+[[Upper East Hall]] 
+
+
+:: North-East Corridor [1st-Floor Formal] {"position":"2100,1500","size":"100,100"}
+[[East Corridor]] 
+
+[[Back Hall]] 
+
+[[Theater]] 
+
+[[Ballroom]] 
+
+
+:: North-West Corridor [1st-Floor Formal] {"position":"1500,1500","size":"100,100"}
+[[West Corridor]] 
+
+[[Back Hall]] 
+
+[[Dining Room]] 
+
+[[Living Room]] 
+
+
+:: Nursery [2nd-Floor Utility] {"position":"4125,1125","size":"100,100"}
+[[Upper Rear Hall]] 
+
+
+:: Observatory [2nd-Floor Formal] {"position":"3025,1825","size":"100,100"}
+[[Upper West Hall]] 
+
+
+:: Parlor [1st-Floor Formal] {"position":"1500,1900","size":"100,100"}
+[[West Corridor]] 
+
+
+:: Pool [1st-Floor Formal] {"position":"2000,1200","size":"100,100"}
+[[Back Hall]] 
+
+[[Sauna]] 
+
+
+:: Prologue {"position":"800,200","size":"100,100"}
+[[Entry Hall]] 
+
+
+:: Ritual Room [Basement-2 Formal] {"position":"2000,800","size":"100,100"}
+
+
+
+:: Sauna [1st-Floor Utility] {"position":"2200,1200","size":"100,100"}
+[[Pool]] 
+
+
+:: Scullery [1st-Floor Utility] {"position":"1200,1200","size":"100,100"}
+[[Kitchen]] 
+
+
+:: Servant's Quarters [Utility 2nd-Floor] {"position":"3125,1125","size":"100,100"}
+[[Upper Rear Hall]] 
+
+
+:: Sewing Room [2nd-Floor Utility] {"position":"3625,1100","size":"100,100"}
+[[Upper Rear Hall]] 
+
+
+:: Specimen Room [Basement-2 Utility] {"position":"2200,2400","size":"100,100"}
+[[Laboratory]] 
+
+
+:: StatBlock {"position":"0,100","size":"100,100"}
+<<for _name, _value range $stats>>
+	<<statRow _name>>
+<</for>>
+
+<hr>
+<<set _total = 0>>
+<<for _v range Object.values($stats)>>
+	<<set _total += _v>>
+<</for>>
+
+Total: <<= _total>>
+
+<<if _total is 15>>
+	<br>
+	<<link "Continue">><<set $characterCreated = true>><<goto "Prologue">><</link>>
+<<else>>
+	<br>
+	<span style="color:red;">Your total must equal 15 before you can continue.</span>
+<</if>>
+
+
+:: StoryInit {"position":"0,0","size":"100,100"}
+/* Visible character stats/properties */
+<<set $character = []>>
+<<set $character.name = "">>
+<<set $stats = {
+    Courage: 5,
+    Clarity: 5,
+    Cunning: 5
+}>>
+
+/* Hidden character stats/properties */
+<<set $characterCreated = false>>
+<<set $mapDiscovered = false>>
+
+/* Item flags */
+
+/* Scenario flags */
+
+/* Stat Widget */
+<<widget "statRow">>
+	<<set _name = $args[0]>>
+	<<set _value = $stats[_name]>>
+
+	<<= _name>>: <<= _value>>
+
+	/* Capture the current _name so buttons modify the right key */
+	<<capture _name>>
+		<<button "+">>
+			<<set $stats[_name] += 1>>
+			<<replace "#statblock">><<include "StatBlock">><</replace>>
+		<</button>>
+		<<button "-">>
+			<<set $stats[_name] = Math.max(0, $stats[_name] - 1)>>
+			<<replace "#statblock">><<include "StatBlock">><</replace>>
+		<</button>>
+	<</capture>>
+	<br>
+<</widget>>
+
+
+:: StoryMenu {"position":"0,500","size":"100,100"}
+<hr>
+<<if $characterCreated is true>>
+[[Character]]
+[[Inventory]]
+<</if>>
+
+<<if $mapDiscovered is true>>
+[[Map]]
+<</if>>
+
+
+:: Study [2nd-Floor Utility] {"position":"3025,1625","size":"100,100"}
+[[Upper West Hall]] 
+
+
+:: Theater [1st-Floor Formal] {"position":"2400,1475","size":"100,100"}
+[[North-East Corridor]] 
+
+
+:: Upper East Hall [2nd-Floor Utility] {"position":"3925,1625","size":"100,100"}
+[[2nd Floor Landing]] 
+
+[[Upper Rear Hall]] 
+
+[[Mistresses' Quarters]] 
+
+[[Music Room]] 
+
+[[Doll Room]] 
+
+
+:: Upper Rear Hall [2nd-Floor Utility] {"position":"3625,1325","size":"100,100"}
+[[Back Hall]] 
+
+[[Upper East Hall]] 
+
+[[Upper West Hall]] 
+
+[[Attic]] 
+
+[[Servant's Quarters]] 
+
+[[Sewing Room]] 
+
+[[Nursery]] 
+
+
+:: Upper West Hall [2nd-Floor Utility] {"position":"3325,1625","size":"100,100"}
+[[Upper Rear Hall]] 
+
+[[2nd Floor Landing]] 
+
+[[Observatory]] 
+
+[[Study]] 
+
+[[Master's Quarters]] 
+
+
+:: West Corridor [1st-Floor Formal] {"position":"1500,1700","size":"100,100"}
+[[Entry Hall]] 
+
+[[North-West Corridor]] 
+
+[[Parlor]] 
+
+[[Billiard Room]] 
+
+
+:: StoryScript [script]
+// Whenever a passage is displayed, remember it
+$(document).on(':passagedisplay', function (ev) {
+	// Don't overwrite if we're *currently in a menu passage*
+	if (['Character','Inventory','Map'].includes(ev.passage.title)) return;
+
+	State.variables._lastPassage = ev.passage.title;
+});
+
+:: StoryStylesheet [stylesheet]
+#ui-dialog {
+	width: 600px;   /* wider popup */
+	max-height: 80vh;
+	overflow-y: auto;
+}
