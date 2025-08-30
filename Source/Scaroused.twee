@@ -15,7 +15,8 @@ Scaroused
     "2nd-Floor": "orange",
     "Basement-1": "red",
     "Basement-2": "red",
-    "3rd-Floor": "red"
+    "3rd-Floor": "red",
+    "Item": "green"
   },
   "zoom": 0.6
 }
@@ -91,7 +92,7 @@ Scaroused
 [[Ritual Room]] 
 
 
-:: Character {"position":"0,200","size":"100,100"}
+:: Character [Menu] {"position":"0,200","size":"100,100"}
 Name: <<print $character.name>>
 Courage: <<print $stats.Courage>>
 Clarity: <<print $stats.Clarity>>
@@ -143,9 +144,7 @@ Cunning: <<print $stats.Cunning>>
 
 [[West Corridor]] 
 
-
-:: Fancy Key {"position":"100,700","size":"100,100"}
-
+<<pickup "Fancy Key" "Entry Hall" "You see something glittering on the ground." "You found a fancy key.">>
 
 
 :: Guest Bedroom (1) [2nd-Floor Formal] {"position":"3025,2025","size":"100,100"}
@@ -175,19 +174,58 @@ Hello, please enter your name:
 
 
 
-:: Inventory {"position":"0,300","size":"100,100"}
+:: Inventory [Menu] {"position":"0,300","size":"100,100"}
 <h2>Inventory</h2>
-<<if $inventory and $inventory.length > 0>>
-	<ul>
-	<<for _item range $inventory>>
-		<li><<= _item>></li>
-	<</for>>
-	</ul>
+<<if $inventory is undefined>>
+	<p>(Inventory not initialized)</p>
 <<else>>
-	<p>You are carrying nothing.</p>
+<ul>
+<<for _entry range Object.entries($inventory)>>
+	<<set _name = _entry[0]>>
+	<<set _data = _entry[1]>>
+	<<if _data.quantity > 0>>
+		<li>
+			<<capture _name _data>>
+				<<link _name>>
+					<<set _content = 
+						"<img src='" + _data.image + "' alt='" + _name + "' style='max-width:200px;'><br>" +
+						"<b>Description:</b> " + _data.description + "<br>" +
+						"<b>Value:</b> " + _data.value + " gold<br>" +
+						"<b>Quantity:</b> " + _data.quantity
+					>>
+					<<run Dialog.setup(_name)>>
+					<<run Dialog.wiki(_content)>>
+					<<run Dialog.open()>>
+				<</link>>
+			<</capture>>
+		</li>
+	<</if>>
+<</for>>
+</ul>
 <</if>>
-
 <<link "Back">><<goto $_lastPassage>><</link>>
+
+
+:: Items [startup] {"position":"0,600","size":"100,100"}
+<<set $inventory = {
+    "Fancy Key": {
+        quantity: 0,
+        value: 100,
+        description: "A beautifully ornate key that must unlock something important."
+    },
+    "Magic Sword": {
+        quantity: 0,
+        value: 500,
+        description: "A glowing blade."
+    },
+    "Health Potion": {
+        quantity: 0,
+        value: 50,
+        description: "A healing potion."
+    }
+}>>
+
+<<print "Startup passage executed. Inventory created.">>
 
 
 :: Kitchen [1st-Floor Utility] {"position":"1175,1400","size":"100,100"}
@@ -226,7 +264,7 @@ Hello, please enter your name:
 [[Intro]]
 
 
-:: Map {"position":"0,400","size":"100,100"}
+:: Map [Menu] {"position":"0,400","size":"100,100"}
 <<link "Back">><<goto $_lastPassage>><</link>>
 
 
@@ -320,7 +358,7 @@ Hello, please enter your name:
 [[Laboratory]] 
 
 
-:: StatBlock {"position":"0,100","size":"100,100"}
+:: StatBlock [Meta] {"position":"0,100","size":"100,100"}
 <<for _name, _value range $stats>>
 	<<statRow _name>>
 <</for>>
@@ -355,8 +393,28 @@ Total: <<= _total>>
 /* Hidden character stats/properties */
 <<set $characterCreated = false>>
 <<set $mapDiscovered = false>>
+<<set $lastItem = "">>
+<<set $world = {}>>
 
 /* Item flags */
+<<set $inventory = {
+    "Fancy Key": {
+        quantity: 0,
+        value: 100,
+        description: "A beautifully ornate key that must unlock something important.",
+        image: "../Source/images/fancyKey.webp"
+    },
+    "Magic Sword": {
+        quantity: 0,
+        value: 500,
+        description: "A glowing blade."
+    },
+    "Health Potion": {
+        quantity: 0,
+        value: 50,
+        description: "A healing potion.",
+    }
+}>>
 
 /* Scenario flags */
 
@@ -452,14 +510,60 @@ Total: <<= _total>>
 [[Billiard Room]] 
 
 
+:: You Got [Meta] {"position":"600,700","size":"100,100"}
+You got <<print $lastItem>> !
+
+<<link "Back">><<goto $_lastPassage>><</link>>
+
+
 :: StoryScript [script]
 // Whenever a passage is displayed, remember it
 $(document).on(':passagedisplay', function (ev) {
-	// Don't overwrite if we're *currently in a menu passage*
-	if (['Character','Inventory','Map'].includes(ev.passage.title)) return;
+    // Array of tags we want to exclude
+    const excludeTags = ['Menu', 'Item', 'Meta'];
 
-	State.variables._lastPassage = ev.passage.title;
+    // Skip storing lastPassage if this passage has any excluded tags
+    if (ev.passage.tags.some(tag => excludeTags.includes(tag))) {
+        return;
+    }
+
+    // Otherwise store it
+    State.variables._lastPassage = ev.passage.title;
 });
+
+//Macro for picking up items
+Macro.add("pickup", {
+	handler() {
+		// Usage:
+		// <<pickup "Fancy Key" "Entry Hall"
+		//   "You see something glittering on the ground."
+		//   "You found a fancy key.">>
+
+		const itemName  = this.args[0];
+		const location  = this.args[1];
+		const text      = this.args[2] || `Take ${itemName}`;
+		const pickupMsg = this.args[3] || "";
+
+		if (!State.variables.world) State.variables.world = {};
+		if (!State.variables.world[location]) State.variables.world[location] = {};
+		if (!State.variables.inventory) State.variables.inventory = {};
+		if (!State.variables.inventory[itemName]) {
+			State.variables.inventory[itemName] = { quantity: 0 };
+		}
+
+		if (!State.variables.world[location][itemName]) {
+			$(this.output).wiki(
+				`<<link "${text}">>
+					<<set $world["${location}"]["${itemName}"] = true>>
+					<<set $inventory["${itemName}"].quantity += 1>>
+					${pickupMsg ? "<<run Dialog.setup('Pickup')>><<run Dialog.wiki('" + pickupMsg + "')>><<run Dialog.open()>>" : ""}
+					<<goto "${location}">>
+				<</link>>`
+			);
+		}
+	}
+});
+
 
 :: StoryStylesheet [stylesheet]
 #ui-dialog {
